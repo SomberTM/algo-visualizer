@@ -18,8 +18,8 @@ export interface SorterHistory {
     comparisons: number;
     // number of swaps at this time
     swaps: number;
-    currentIndex: number;
-    comparisonIndex: number;
+    // currentIndex: number;
+    // comparisonIndex: number;
 }
 
 export type SorterHistoryType = SorterHistory[];
@@ -83,15 +83,27 @@ export default abstract class Sorter extends EventEmitter {
             array: this.array.slice(),
             comparisons: this.statistics.comparisons,
             swaps: this.statistics.swaps,
-            currentIndex: i,
-            comparisonIndex: j
         });
         this.emit("swap", this.array, i, j);
+    }
+
+    protected setValue(i: number, value: number): void {
+        this.array[i] = value;
+        this.history.push({
+            array: this.array.slice(),
+            comparisons: this.statistics.comparisons,
+            swaps: this.statistics.swaps,
+        });
     }
 
     protected compare(i: number, j: number): boolean {
         this.emit("comparison", this.array, i, j);
         return this.array[i] < this.array[j];
+    }
+
+    protected compareValues(a: number, b: number): boolean {
+        this.emit("comparison", this.array, null, null)
+        return a < b;
     }
 
     public getArray(): number[] {
@@ -104,7 +116,7 @@ export default abstract class Sorter extends EventEmitter {
 
     public getStatistics(): SorterStatistics {
         return this.statistics;
-    }   
+    }
 
     public getOperationSpeed(): number {
         return this.operationSpeed;

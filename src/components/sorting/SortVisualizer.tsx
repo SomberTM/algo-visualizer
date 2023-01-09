@@ -5,11 +5,10 @@ interface SortVisualizerProps {
     array: number[];
     candleWidth: number;
     canvas: React.RefObject<HTMLCanvasElement>;
-    generateArray?: (subCandleWidth?: number) => number[];
-    handleResize?: (width: number, height: number) => void;
+    generateArray: (subCandleWidth?: number, subCanvas?: React.RefObject<HTMLCanvasElement>) => number[];
 }
 
-export const SortVisualizer: React.FC<SortVisualizerProps> = ({ array, generateArray, candleWidth, canvas, handleResize: onResize }: SortVisualizerProps) => {
+export const SortVisualizer: React.FC<SortVisualizerProps> = ({ array, generateArray, candleWidth, canvas }: SortVisualizerProps) => {
     const canvasCtx = useRef<CanvasRenderingContext2D | null>(null);
     const canvasContainer = useRef<HTMLDivElement>(null);
 
@@ -21,9 +20,7 @@ export const SortVisualizer: React.FC<SortVisualizerProps> = ({ array, generateA
                 if (canvas.current) {
                     canvas.current.width = canvasContainer.current!.clientWidth;
                     canvas.current.height = canvasContainer.current!.clientHeight;
-                    if (onResize) {
-                        onResize(canvas.current.width, canvas.current.height);
-                    }
+                    generateArray(candleWidth, canvas);
                     drawArray();
                 }
             }
@@ -31,18 +28,13 @@ export const SortVisualizer: React.FC<SortVisualizerProps> = ({ array, generateA
             canvas.current.width = canvasContainer.current!.clientWidth;
             canvas.current.height = canvasContainer.current!.clientHeight;
             canvasCtx.current = canvas.current.getContext('2d');
-            if (generateArray) {
-                // ensures that we generate an array that fits the canvas 
-                // or else it will just be the default 100 element array
-                generateArray();
-            }
+            generateArray(candleWidth, canvas)
             drawArray();
             return () => window.removeEventListener('resize', handleResize);
         }
     }, []);
 
     const drawArray = () => {
-        console.log(`Drawing array`);
         canvasCtx.current!.fillStyle = theme.palette.background.default;
         canvasCtx.current!.fillRect(0, 0, canvas.current!.width, canvas.current!.height);
         for (let i = 0; i < array.length; i++) {

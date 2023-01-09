@@ -7,7 +7,7 @@ export default class MergeSort extends Sorter {
             resolve();
         })
     }
-    
+
     async mergeSort(start: number, end: number) {
         if (start >= end) {
             return;
@@ -25,22 +25,26 @@ export default class MergeSort extends Sorter {
         let rightIndex = 0;
         let index = start;
         while (leftIndex < leftArray.length && rightIndex < rightArray.length) {
-            if (leftArray[leftIndex] < rightArray[rightIndex]) {
+            if (this.compareValues(leftArray[leftIndex], rightArray[rightIndex])) {
                 this.array[index] = leftArray[leftIndex];
+                await this.wait();
                 leftIndex++;
             } else {
                 this.array[index] = rightArray[rightIndex];
+                await this.wait();
                 rightIndex++;
             }
             index++;
         }
         while (leftIndex < leftArray.length) {
             this.array[index] = leftArray[leftIndex];
+            await this.wait();
             leftIndex++;
             index++;
         }
         while (rightIndex < rightArray.length) {
             this.array[index] = rightArray[rightIndex];
+            await this.wait();
             rightIndex++;
             index++;
         }

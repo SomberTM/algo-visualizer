@@ -1,0 +1,29 @@
+.button-add-manager:hover {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+.button-add-manager:not(:hover) {
+    opacity: 0.2;
+}
+
+.button-add-manager {
+    display: block;
+    text-align: center;
+    left: 50vw
+}
+
+.sort-visualizer-canvas-container {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    padding: 0px;
+    margin: 0px;
+    max-height: 20vh;
+}
+
+.sort-visualizer-canvas {
+    overflow: hidden;
+    border: 1px solid #FFF;
+    width: 100%;
+    height: 100%;
+}
